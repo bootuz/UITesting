@@ -26,10 +26,6 @@ final class CreateDeckFlowTests: UITestingTestCase {
 - **Compile-time type safety** — `screen.text("Saved").tap()` is a compile error.
 - **Structured failure messages** with optional diagnostic mode that suggests likely test ID typos.
 
-## Status
-
-v0.1 in development. iOS only. See [the design spec](./docs/design.md) for the full architecture.
-
 ## License
 
 MIT
