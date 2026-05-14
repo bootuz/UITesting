@@ -1,4 +1,4 @@
-# UITesting
+# Swift UITesting
 
 A Playwright-flavored wrapper over Apple's XCUITest. Swift-native, all-sync, Swift 6 ready.
 
