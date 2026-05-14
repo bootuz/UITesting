@@ -26,6 +26,7 @@ public struct LocatorError: Error, Sendable, CustomStringConvertible {
     public let elapsed: Duration
     public let file: StaticString
     public let line: UInt
+    public let isNegated: Bool
     public let diagnostics: DiagnosticInfo?
 
     public init(
@@ -36,6 +37,7 @@ public struct LocatorError: Error, Sendable, CustomStringConvertible {
         elapsed: Duration,
         file: StaticString,
         line: UInt,
+        isNegated: Bool = false,
         diagnostics: DiagnosticInfo? = nil
     ) {
         self.id = id
@@ -45,6 +47,7 @@ public struct LocatorError: Error, Sendable, CustomStringConvertible {
         self.elapsed = elapsed
         self.file = file
         self.line = line
+        self.isNegated = isNegated
         self.diagnostics = diagnostics
     }
 
@@ -102,27 +105,34 @@ enum FailureMessageRenderer {
     }
 
     private static func headline(_ error: LocatorError) -> String {
+        let negated = error.isNegated
         switch error.kind {
         case .notVisible:
-            return "Expected \(error.locator) to be visible"
+            return "Expected \(error.locator) \(negated ? "not to be visible" : "to be visible")"
         case .notHittable:
-            return "Expected \(error.locator) to be hittable"
+            return "Expected \(error.locator) \(negated ? "not to be hittable" : "to be hittable")"
         case .notExist:
-            return "Expected \(error.locator) to exist"
+            return "Expected \(error.locator) \(negated ? "not to exist" : "to exist")"
         case let .valueMismatch(expected, observed):
-            return "Expected \(error.locator) to have value \"\(expected)\", got \(formatOptional(observed))"
+            let verb = negated ? "not to have value" : "to have value"
+            return "Expected \(error.locator) \(verb) \"\(expected)\", got \(formatOptional(observed))"
         case let .labelMismatch(expected, observed):
-            return "Expected \(error.locator) to have label \"\(expected)\", got \(formatOptional(observed))"
+            let verb = negated ? "not to have label" : "to have label"
+            return "Expected \(error.locator) \(verb) \"\(expected)\", got \(formatOptional(observed))"
         case let .textMismatch(expected, observed):
-            return "Expected \(error.locator) to contain text \"\(expected)\", got \(formatOptional(observed))"
+            let verb = negated ? "not to contain text" : "to contain text"
+            return "Expected \(error.locator) \(verb) \"\(expected)\", got \(formatOptional(observed))"
         case let .toggleMismatch(expectedOn, observedOn):
             let observedLabel = observedOn.map { $0 ? "on" : "off" } ?? "missing"
-            return "Expected \(error.locator) to be \(expectedOn ? "on" : "off"), got \(observedLabel)"
+            let target = expectedOn ? "on" : "off"
+            return "Expected \(error.locator) \(negated ? "not to be" : "to be") \(target), got \(observedLabel)"
         case let .focusMismatch(expectedFocused):
-            return "Expected \(error.locator) to be \(expectedFocused ? "focused" : "unfocused")"
+            let state = expectedFocused ? "focused" : "unfocused"
+            return "Expected \(error.locator) \(negated ? "not to be" : "to be") \(state)"
         case let .adjustableMismatch(expected, observed, tolerance):
             let observedLabel = observed.map { String(format: "%.4f", $0) } ?? "missing"
-            return "Expected \(error.locator) value ≈ \(String(format: "%.4f", expected)) (±\(tolerance)), got \(observedLabel)"
+            let verb = negated ? "value not ≈" : "value ≈"
+            return "Expected \(error.locator) \(verb) \(String(format: "%.4f", expected)) (±\(tolerance)), got \(observedLabel)"
         case .timeout:
             return "Timed out waiting for \(error.locator)"
         case let .actionFailed(message):

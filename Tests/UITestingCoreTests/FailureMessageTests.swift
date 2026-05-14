@@ -50,6 +50,21 @@ struct FailureMessageTests {
         #expect(rendered.contains("Hint: closest testID match is \"library.searchButton\"."))
     }
 
+    @Test func negated_headline_reads_naturally() {
+        let error = LocatorError(
+            kind: .notVisible,
+            locator: LocatorDescription(path: "anyElement(testID: \"library.deckCell.FlowTest Deck\")"),
+            observed: .present(.init(testID: "library.deckCell.FlowTest Deck", isVisible: true)),
+            elapsed: .seconds(5),
+            file: #filePath,
+            line: #line,
+            isNegated: true
+        )
+        let rendered = error.description
+        #expect(rendered.contains("not to be visible"))
+        #expect(!rendered.contains("Expected anyElement(testID: \"library.deckCell.FlowTest Deck\") to be visible\n"))
+    }
+
     @Test func valueMismatch_includesExpectedAndObserved() {
         let error = LocatorError(
             kind: .valueMismatch(expected: "42", observed: "17"),

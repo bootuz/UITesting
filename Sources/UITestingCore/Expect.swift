@@ -290,6 +290,7 @@ extension Expectation {
                         elapsed: elapsed,
                         file: file,
                         line: line,
+                        isNegated: isNegated,
                         diagnostics: locator.makeDiagnostics(for: observed)
                     )
                     driver.reporter.record(error)
