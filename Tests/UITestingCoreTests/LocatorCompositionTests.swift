@@ -4,7 +4,7 @@ import Testing
 @Suite("Locator composition")
 struct LocatorCompositionTests {
 
-    @Test func button_factoryProducesByTestIDQuery() {
+    @Test func button_factoryProducesByAccIDQuery() {
         let driver = FakeDriver()
         let screen = TestScreen(driver: driver)
 
@@ -12,9 +12,9 @@ struct LocatorCompositionTests {
 
         #expect(locator.query.steps == [
             .byKind(.button),
-            .byTestID("save")
+            .byAccID("save")
         ])
-        #expect(locator.description.path == "button(testID: \"save\")")
+        #expect(locator.description.path == "button(accID: \"save\")")
     }
 
     @Test func buttonByLabel_factoryProducesByLabelQuery() {
@@ -49,7 +49,7 @@ struct LocatorCompositionTests {
 
         #expect(locator.query.steps == [
             .byKind(.button),
-            .byTestID("save"),
+            .byAccID("save"),
             .first
         ])
     }
@@ -58,11 +58,11 @@ struct LocatorCompositionTests {
         let driver = FakeDriver()
         let screen = TestScreen(driver: driver)
 
-        let locator = screen.cell(testID: "row").nth(3)
+        let locator = screen.cell(accID: "row").nth(3)
 
         #expect(locator.query.steps == [
             .byKind(.cell),
-            .byTestID("row"),
+            .byAccID("row"),
             .nth(3)
         ])
     }
@@ -71,13 +71,13 @@ struct LocatorCompositionTests {
         let driver = FakeDriver()
         let screen = TestScreen(driver: driver)
 
-        let parent = screen.cell(testID: "deckCell")
+        let parent = screen.cell(accID: "deckCell")
         let child = screen.button("delete")
         let combined = parent.descendant(child)
 
         #expect(combined.query.steps == [
             .byKind(.cell),
-            .byTestID("deckCell"),
+            .byAccID("deckCell"),
             .descendant(child.query)
         ])
         #expect(combined.description.path.contains("deckCell"))
@@ -89,7 +89,7 @@ struct LocatorCompositionTests {
         let screen = TestScreen(driver: driver)
         let locator = screen.button("save")
 
-        driver.script([.present(.init(testID: "save"))], for: locator.query)
+        driver.script([.present(.init(accID: "save"))], for: locator.query)
 
         #expect(locator.exists())
     }

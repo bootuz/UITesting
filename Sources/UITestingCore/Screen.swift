@@ -27,28 +27,28 @@ extension Screen {
 // MARK: - Locator factories (by accessibility identifier)
 
 extension Screen {
-    public func button(_ testID: String) -> Locator<Button> {
-        makeLocator(testID: testID, kind: Button.self, label: "button")
+    public func button(_ accID: String) -> Locator<Button> {
+        makeLocator(accID: accID, kind: Button.self, label: "button")
     }
 
-    public func textField(_ testID: String) -> Locator<TextField> {
-        makeLocator(testID: testID, kind: TextField.self, label: "textField")
+    public func textField(_ accID: String) -> Locator<TextField> {
+        makeLocator(accID: accID, kind: TextField.self, label: "textField")
     }
 
-    public func cell(testID: String) -> Locator<Cell> {
-        makeLocator(testID: testID, kind: Cell.self, label: "cell")
+    public func cell(accID: String) -> Locator<Cell> {
+        makeLocator(accID: accID, kind: Cell.self, label: "cell")
     }
 
-    public func image(_ testID: String) -> Locator<Image> {
-        makeLocator(testID: testID, kind: Image.self, label: "image")
+    public func image(_ accID: String) -> Locator<Image> {
+        makeLocator(accID: accID, kind: Image.self, label: "image")
     }
 
-    public func switch_(_ testID: String) -> Locator<Switch> {
-        makeLocator(testID: testID, kind: Switch.self, label: "switch")
+    public func switch_(_ accID: String) -> Locator<Switch> {
+        makeLocator(accID: accID, kind: Switch.self, label: "switch")
     }
 
-    public func slider(_ testID: String) -> Locator<Slider> {
-        makeLocator(testID: testID, kind: Slider.self, label: "slider")
+    public func slider(_ accID: String) -> Locator<Slider> {
+        makeLocator(accID: accID, kind: Slider.self, label: "slider")
     }
 }
 
@@ -88,18 +88,18 @@ extension Screen {
     /// custom kind to `ElementKind` plus the capability protocols matching
     /// the actions you want to expose, then call this factory.
     public func locator<K: ElementKind>(
-        testID: String,
+        accID: String,
         of kind: K.Type = K.self
     ) -> Locator<K> {
         let query = ElementQuery(steps: [
             .byKind(K.tag),
-            .byTestID(testID)
+            .byAccID(accID)
         ])
         return Locator<K>(
             driver: driver,
             query: query,
             timeoutPolicy: timeoutPolicy,
-            description: LocatorDescription(path: "\(K.tag)(testID: \"\(testID)\")")
+            description: LocatorDescription(path: "\(K.tag)(accID: \"\(accID)\")")
         )
     }
 
@@ -127,19 +127,19 @@ extension Screen {
 
 extension Screen {
     fileprivate func makeLocator<K: ElementKind>(
-        testID: String,
+        accID: String,
         kind: K.Type,
         label: String
     ) -> Locator<K> {
         let query = ElementQuery(steps: [
             .byKind(K.tag),
-            .byTestID(testID)
+            .byAccID(accID)
         ])
         return Locator<K>(
             driver: driver,
             query: query,
             timeoutPolicy: timeoutPolicy,
-            description: LocatorDescription(path: "\(label)(testID: \"\(testID)\")")
+            description: LocatorDescription(path: "\(label)(accID: \"\(accID)\")")
         )
     }
 

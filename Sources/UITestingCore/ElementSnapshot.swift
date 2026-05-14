@@ -22,7 +22,7 @@ public enum ElementSnapshot: Sendable, Equatable {
 /// as long as they have safe defaults — this struct is intentionally a
 /// value type with public letting so consumers can construct test fixtures.
 public struct ElementAttributes: Sendable, Equatable {
-    public let testID: String?
+    public let accID: String?
     public let label: String?
     public let value: String?
     public let isVisible: Bool
@@ -31,7 +31,7 @@ public struct ElementAttributes: Sendable, Equatable {
     public let elementType: ElementKindTag
 
     public init(
-        testID: String? = nil,
+        accID: String? = nil,
         label: String? = nil,
         value: String? = nil,
         isVisible: Bool = false,
@@ -39,7 +39,7 @@ public struct ElementAttributes: Sendable, Equatable {
         frame: CGRect = .zero,
         elementType: ElementKindTag = .anyElement
     ) {
-        self.testID = testID
+        self.accID = accID
         self.label = label
         self.value = value
         self.isVisible = isVisible

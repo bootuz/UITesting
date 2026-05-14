@@ -18,7 +18,7 @@ public struct ElementQuery: Sendable, Hashable {
 
     /// A single step in the query path.
     public indirect enum Step: Sendable, Hashable {
-        case byTestID(String)
+        case byAccID(String)
         case byLabel(String)
         case byText(String)
         case byKind(ElementKindTag)

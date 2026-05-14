@@ -155,27 +155,27 @@ extension Locator {
     func makeDiagnostics(for observed: ElementSnapshot) -> LocatorError.DiagnosticInfo? {
         guard driver.diagnostics == .verbose else { return nil }
         let candidates = driver.enumerate(kind: Kind.tag)
-        let closest = closestTestIDMatch(candidates: candidates, target: targetTestID())
+        let closest = closestAccIDMatch(candidates: candidates, target: targetAccID())
         return LocatorError.DiagnosticInfo(candidates: candidates, closestMatch: closest)
     }
 
-    /// Extract a test-ID hint from the query (heuristic — used only for
-    /// "did you mean" suggestions, not correctness).
-    func targetTestID() -> String? {
+    /// Extract an accessibility-ID hint from the query (heuristic — used only
+    /// for "did you mean" suggestions, not correctness).
+    func targetAccID() -> String? {
         for step in query.steps.reversed() {
-            if case let .byTestID(id) = step { return id }
+            if case let .byAccID(id) = step { return id }
         }
         return nil
     }
 
-    func closestTestIDMatch(
+    func closestAccIDMatch(
         candidates: [ElementAttributes],
         target: String?
     ) -> ElementAttributes? {
         guard let target else { return nil }
         var best: (attrs: ElementAttributes, distance: Int)?
         for attrs in candidates {
-            guard let id = attrs.testID else { continue }
+            guard let id = attrs.accID else { continue }
             let distance = levenshteinDistance(id, target)
             if best == nil || distance < best!.distance {
                 best = (attrs, distance)

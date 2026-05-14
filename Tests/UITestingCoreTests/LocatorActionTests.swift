@@ -11,7 +11,7 @@ struct LocatorActionTests {
         let locator = screen.button("save")
 
         driver.script(
-            [.present(.init(testID: "save", isVisible: true, isHittable: true))],
+            [.present(.init(accID: "save", isVisible: true, isHittable: true))],
             for: locator.query
         )
 
@@ -26,7 +26,7 @@ struct LocatorActionTests {
         let reporter = RecordingFailureReporter()
         let driver = FakeDriver(reporter: reporter)
         let screen = TestScreen(driver: driver)
-        let locator = TestScreen.lowTimeoutLocator(screen: screen, testID: "save")
+        let locator = TestScreen.lowTimeoutLocator(screen: screen, accID: "save")
 
         #expect(throws: LocatorError.self) {
             try locator.tap()
@@ -42,7 +42,7 @@ struct LocatorActionTests {
         let locator = screen.textField("name")
 
         driver.script(
-            [.present(.init(testID: "name", isVisible: true, isHittable: true))],
+            [.present(.init(accID: "name", isVisible: true, isHittable: true))],
             for: locator.query
         )
 
@@ -59,10 +59,10 @@ struct LocatorActionTests {
     @Test func scrollToVisible_doesNotRequireHittable() throws {
         let driver = FakeDriver()
         let screen = TestScreen(driver: driver)
-        let locator = screen.cell(testID: "deepRow")
+        let locator = screen.cell(accID: "deepRow")
 
         driver.script(
-            [.present(.init(testID: "deepRow", isVisible: false, isHittable: false))],
+            [.present(.init(accID: "deepRow", isVisible: false, isHittable: false))],
             for: locator.query
         )
 
@@ -78,7 +78,7 @@ struct LocatorActionTests {
         let locator = screen.button("save")
 
         driver.script(
-            [.present(.init(testID: "save", isVisible: true, isHittable: true))],
+            [.present(.init(accID: "save", isVisible: true, isHittable: true))],
             for: locator.query
         )
         driver.performError = NSError(domain: "test", code: 1)
@@ -98,8 +98,8 @@ struct LocatorActionTests {
 private struct TestScreen: Screen {
     let driver: any Driver
 
-    static func lowTimeoutLocator(screen: TestScreen, testID: String) -> Locator<Button> {
-        let base = screen.button(testID)
+    static func lowTimeoutLocator(screen: TestScreen, accID: String) -> Locator<Button> {
+        let base = screen.button(accID)
         var policy = TimeoutPolicy()
         policy.action = .milliseconds(100)
         policy.pollInterval = .milliseconds(20)

@@ -11,7 +11,7 @@ struct ExpectMatcherTests {
         let locator = screen.button("save")
 
         driver.script(
-            [.present(.init(testID: "save", isVisible: true, isHittable: true))],
+            [.present(.init(accID: "save", isVisible: true, isHittable: true))],
             for: locator.query
         )
 
@@ -55,7 +55,7 @@ struct ExpectMatcherTests {
         let locator = screen.button("save")
 
         driver.script(
-            [.present(.init(testID: "save", label: "Save"))],
+            [.present(.init(accID: "save", label: "Save"))],
             for: locator.query
         )
 
@@ -71,7 +71,7 @@ struct ExpectMatcherTests {
         let locator = screen.button("save")
 
         driver.script(
-            [.present(.init(testID: "save", label: "Submit"))],
+            [.present(.init(accID: "save", label: "Submit"))],
             for: locator.query
         )
 

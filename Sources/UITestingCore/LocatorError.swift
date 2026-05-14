@@ -96,9 +96,9 @@ enum FailureMessageRenderer {
             for candidate in diagnostics.candidates.prefix(8) {
                 lines.append("    • \(formatCandidate(candidate))")
             }
-            if let closest = diagnostics.closestMatch, let id = closest.testID {
+            if let closest = diagnostics.closestMatch, let id = closest.accID {
                 lines.append("")
-                lines.append("  Hint: closest testID match is \"\(id)\".")
+                lines.append("  Hint: closest accID match is \"\(id)\".")
             }
         }
         return lines.joined(separator: "\n")
@@ -146,7 +146,7 @@ enum FailureMessageRenderer {
             return "missing (not in hierarchy)"
         case let .present(attrs):
             var pieces: [String] = ["present"]
-            if let id = attrs.testID { pieces.append("testID=\"\(id)\"") }
+            if let id = attrs.accID { pieces.append("accID=\"\(id)\"") }
             if let label = attrs.label { pieces.append("label=\"\(label)\"") }
             if let value = attrs.value { pieces.append("value=\"\(value)\"") }
             pieces.append("visible=\(attrs.isVisible)")
@@ -157,7 +157,7 @@ enum FailureMessageRenderer {
 
     private static func formatCandidate(_ attrs: ElementAttributes) -> String {
         var pieces: [String] = ["\(attrs.elementType)"]
-        if let id = attrs.testID { pieces.append("[testID=\"\(id)\"]") }
+        if let id = attrs.accID { pieces.append("[accID=\"\(id)\"]") }
         if let label = attrs.label { pieces.append("label=\"\(label)\"") }
         return pieces.joined(separator: " ")
     }

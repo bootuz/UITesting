@@ -65,7 +65,7 @@ public final class XCUITestDriver: Driver, @unchecked Sendable {
 
     private func attributes(from element: XCUIElement) -> ElementAttributes {
         ElementAttributes(
-            testID: element.identifier.isEmpty ? nil : element.identifier,
+            accID: element.identifier.isEmpty ? nil : element.identifier,
             label: element.label.isEmpty ? nil : element.label,
             value: stringValue(from: element),
             isVisible: element.isHittable || (element.exists && !element.frame.isEmpty),
@@ -236,7 +236,7 @@ private enum ElementQueryChain {
 
     func applying(_ step: ElementQuery.Step) -> ElementQueryChain {
         switch step {
-        case .byTestID(let id):
+        case .byAccID(let id):
             return .query(currentQuery.matching(identifier: id))
 
         case .byLabel(let label):
