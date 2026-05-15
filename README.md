@@ -2,6 +2,22 @@
 
 A Playwright-flavored wrapper over Apple's XCUITest. Swift-native, all-sync, Swift 6 ready.
 
+
+```swift
+import UITesting
+
+struct LibraryScreen: Screen {
+    let driver: any Driver
+
+    var addButton: Locator<Button>     { button(A11y.Library.addButton) }
+    var nameField: Locator<TextField>  { textField(A11y.Library.inlineFormNameField) }
+    var saveButton: Locator<Button>    { button(A11y.Library.inlineFormSaveButton) }
+
+    func deckCell(named name: String) -> Locator<AnyElement> {
+        locator(accID: A11y.Library.deckCell(name), of: AnyElement.self)
+    }
+```
+
 ```swift
 import UITesting
 
