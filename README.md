@@ -16,6 +16,7 @@ struct LibraryScreen: Screen {
     func deckCell(named name: String) -> Locator<AnyElement> {
         locator(accID: A11y.Library.deckCell(name), of: AnyElement.self)
     }
+}
 ```
 
 ```swift
